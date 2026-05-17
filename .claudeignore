@@ -1,0 +1,29 @@
+# Secrets — never read these
+.env
+.env.*
+*.pem
+*.key
+secrets.*
+**/credentials*
+**/*.secret
+**/*.secrets
+
+# Build output and caches
+dist
+.astro
+.cache
+.vite
+
+# Dependencies
+node_modules
+package-lock.json
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+
+# Logs
+*.log
+npm-debug.log*
