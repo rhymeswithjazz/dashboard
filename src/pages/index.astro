@@ -6,23 +6,34 @@ import Today from "../components/Today.astro";
 import Work from "../components/Work.astro";
 import Sports from "../components/Sports.astro";
 import News from "../components/News.astro";
+import Picture from "../components/Picture.astro";
 import Curiosity from "../components/Curiosity.astro";
 import { getModeMeta, formatDateET, formatTimeET, volumeNumber } from "../lib/mode";
 import { sampleData } from "../lib/sample-data";
 import { loadConfig } from "../lib/config";
 import { fetchWeather } from "../data/weather";
+import { fetchWikipediaPack, pickWord } from "../data/wikipedia";
 
 const { mode, label, builtAt } = getModeMeta();
 const config = loadConfig();
 const fallback = sampleData(mode);
 
-const [weather] = await Promise.all([
+const [weather, wiki] = await Promise.all([
   fetchWeather(config.location, mode),
+  fetchWikipediaPack(),
 ]);
+
+const word = pickWord(builtAt);
 
 const data = {
   ...fallback,
   weather: weather ?? fallback.weather,
+  picture: wiki.picture,
+  curio: {
+    onThisDay: wiki.onThisDay ?? fallback.curio.onThisDay,
+    word,
+    wiki: wiki.randomWiki ?? fallback.curio.wiki,
+  },
 };
 
 const dateLabel = formatDateET(builtAt);
@@ -48,6 +59,7 @@ const workKicker =
   <Work data={data.work} kicker={workKicker} />
   <Sports data={data.sports} />
   <News data={data.news} />
+  {data.picture && <Picture data={data.picture} />}
   <Curiosity data={data.curio} />
   <footer class="colophon">{builtLabel}</footer>
 </Newsprint>

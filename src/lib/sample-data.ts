@@ -20,6 +20,12 @@ export interface CurioData {
   word: { term: string; def: string };
   wiki: string;
 }
+export interface PictureData {
+  url: string;
+  caption: string;
+  credit: string;
+  link: string;
+}
 
 export interface DashboardData {
   briefing: BriefingData;
@@ -28,6 +34,7 @@ export interface DashboardData {
   work: WorkData;
   sports: SportsData;
   news: NewsData;
+  picture: PictureData | null;
   curio: CurioData;
 }
 
@@ -77,6 +84,7 @@ const WARMUP: DashboardData = {
       { tag: "Anthropic blog",        title: "Introducing Opus 4.7",                           sub: "anthropic.com · today" },
     ],
   },
+  picture: null,
   curio: {
     onThisDay: { year: "1954", text: "The Supreme Court decides Brown v. Board of Education, ruling racial segregation in public schools unconstitutional." },
     word: { term: "Sonder", def: "the realization that each passerby is living a life as vivid and complex as your own." },
@@ -126,6 +134,7 @@ const COOLDOWN: DashboardData = {
       { tag: "Anthropic blog",        title: "Introducing Opus 4.7",                  sub: "anthropic.com · today" },
     ],
   },
+  picture: null,
   curio: {
     onThisDay: { year: "1954", text: "The Supreme Court decides Brown v. Board of Education, ruling racial segregation in public schools unconstitutional." },
     word: { term: "Sonder", def: "the realization that each passerby is living a life as vivid and complex as your own." },

@@ -1,0 +1,18 @@
+---
+import type { PictureData } from "../lib/sample-data";
+interface Props { data: PictureData }
+const { data } = Astro.props;
+---
+<section class="section picture">
+  <h2>Picture of the Day</h2>
+  <hr class="rule">
+  <figure class="frame">
+    <a href={data.link} rel="noopener">
+      <img src={data.url} alt={data.caption} loading="lazy" />
+    </a>
+    <figcaption>
+      <div class="cap">{data.caption}</div>
+      <div class="credit">— {data.credit}</div>
+    </figcaption>
+  </figure>
+</section>
