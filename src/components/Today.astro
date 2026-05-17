@@ -14,11 +14,18 @@ const { weather, calendar, kicker } = Astro.props;
   <dl class="line">
     <dt>Weather</dt>
     <dd>{weather.summary} · H {weather.high}° / L {weather.low}° · {weather.rainNote}</dd>
-    {calendar.events.map((ev) => (
+    {calendar.events.length > 0 ? (
+      calendar.events.map((ev) => (
+        <>
+          <dt>{ev.time}</dt>
+          <dd>{ev.title}</dd>
+        </>
+      ))
+    ) : (
       <>
-        <dt>{ev.time}</dt>
-        <dd>{ev.title}</dd>
+        <dt>Schedule</dt>
+        <dd><em>Nothing on the books.</em></dd>
       </>
-    ))}
+    )}
   </dl>
 </section>
