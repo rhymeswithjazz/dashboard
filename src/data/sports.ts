@@ -21,7 +21,9 @@ interface EspnCompetitor {
   id?: string;
   homeAway?: "home" | "away";
   winner?: boolean;
-  score?: string;
+  // ESPN returns this as a plain string on most endpoints, but as
+  // { value, displayValue } on some scoreboard responses. Accept both.
+  score?: string | { value?: number; displayValue?: string };
   team?: { id?: string; abbreviation?: string; displayName?: string };
 }
 interface EspnStatus {
@@ -55,14 +57,38 @@ async function fetchTeam(team: SportsTeam, tz: string): Promise<GameLine | null>
       signal: AbortSignal.timeout(TIMEOUT),
     });
     if (!res.ok) {
-      console.warn(`[sports/${team.label}] non-2xx: ${res.status}`);
+      console.warn(`[sports/${team.label}] schedule non-2xx: ${res.status}`);
       return { team: team.label, result: "—", next: "—" };
     }
     const json = (await res.json()) as EspnScheduleResponse;
-    return buildLine(team, json.events ?? [], tz);
+    const events = json.events ?? [];
+    const inProgress = events.find((e) => stateOf(e) === "in");
+    // Schedule endpoint doesn't refresh competitor.score for in-progress
+    // games. Pull a fresh event from the league scoreboard if we have one.
+    const live = inProgress ? await fetchLiveEvent(team, inProgress.id) : null;
+    return buildLine(team, events, live, tz);
   } catch (err) {
     console.warn(`[sports/${team.label}] fetch failed:`, err);
     return { team: team.label, result: "—", next: "—" };
+  }
+}
+
+async function fetchLiveEvent(team: SportsTeam, eventId: string): Promise<EspnEvent | null> {
+  const url = `https://site.api.espn.com/apis/site/v2/sports/${sportPath(team.league)}/scoreboard`;
+  try {
+    const res = await fetch(url, {
+      headers: { "User-Agent": UA, Accept: "application/json" },
+      signal: AbortSignal.timeout(TIMEOUT),
+    });
+    if (!res.ok) {
+      console.warn(`[sports/${team.label}] scoreboard non-2xx: ${res.status}`);
+      return null;
+    }
+    const json = (await res.json()) as EspnScheduleResponse;
+    return json.events?.find((e) => e.id === eventId) ?? null;
+  } catch (err) {
+    console.warn(`[sports/${team.label}] scoreboard fetch failed:`, err);
+    return null;
   }
 }
 
@@ -78,7 +104,7 @@ function sportPath(league: SportsLeague): string {
   }
 }
 
-function buildLine(team: SportsTeam, events: EspnEvent[], tz: string): GameLine {
+function buildLine(team: SportsTeam, events: EspnEvent[], liveEvent: EspnEvent | null, tz: string): GameLine {
   const now = new Date();
   const teamIdStr = String(team.team_id);
 
@@ -91,7 +117,8 @@ function buildLine(team: SportsTeam, events: EspnEvent[], tz: string): GameLine 
 
   let result: string;
   if (inProgress) {
-    result = formatLive(inProgress, teamIdStr);
+    // Prefer the scoreboard event for fresh scores; fall back to schedule.
+    result = formatLive(liveEvent ?? inProgress, teamIdStr);
   } else if (lastFinal) {
     const ageDays = (now.getTime() - Date.parse(lastFinal.date)) / 86_400_000;
     result = ageDays <= STALE_DAYS ? formatResult(lastFinal, teamIdStr) : "offseason";
@@ -117,26 +144,32 @@ function competitorsFor(e: EspnEvent, teamId: string): { us?: EspnCompetitor; th
   return { us, them };
 }
 
+function readScore(c: EspnCompetitor | undefined): string {
+  if (!c) return "0";
+  if (typeof c.score === "string") return c.score;
+  if (c.score && typeof c.score === "object") {
+    if (typeof c.score.displayValue === "string") return c.score.displayValue;
+    if (typeof c.score.value === "number") return String(c.score.value);
+  }
+  return "0";
+}
+
 function formatResult(e: EspnEvent, teamId: string): string {
   const { us, them } = competitorsFor(e, teamId);
   if (!us || !them) return "—";
   const wl = us.winner === true ? "W" : them.winner === true ? "L" : "T";
-  const usScore = us.score ?? "?";
-  const themScore = them.score ?? "?";
   const venue = us.homeAway === "home" ? "vs" : "@";
   const opp = them.team?.abbreviation ?? them.team?.displayName ?? "?";
-  return `${wl} ${usScore}–${themScore} ${venue} ${opp}`;
+  return `${wl} ${readScore(us)}–${readScore(them)} ${venue} ${opp}`;
 }
 
 function formatLive(e: EspnEvent, teamId: string): string {
   const { us, them } = competitorsFor(e, teamId);
   if (!us || !them) return "live";
-  const usScore = us.score ?? "0";
-  const themScore = them.score ?? "0";
   const venue = us.homeAway === "home" ? "vs" : "@";
   const opp = them.team?.abbreviation ?? "?";
   const detail = e.competitions?.[0]?.status?.type?.shortDetail ?? "live";
-  return `${usScore}–${themScore} ${venue} ${opp} · ${detail}`;
+  return `${readScore(us)}–${readScore(them)} ${venue} ${opp} · ${detail}`;
 }
 
 function formatNext(e: EspnEvent, teamId: string, now: Date, tz: string): string {
