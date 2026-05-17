@@ -6,3 +6,18 @@ location:
   lat: 33.5801
   lon: -85.0766
   timezone: "America/New_York"
+
+news:
+  hn_count: 5            # how many top HN stories to fetch
+  per_source_max: 2      # cap items per individual feed/source
+  total_max: 10          # final cap after merge
+  rss:
+    - "https://www.anthropic.com/rss.xml"
+  reddit_subs:
+    - "AtlantaBraves"
+    - "falcons"
+    - "georgiabulldogs"
+  google_news_queries:
+    - "Atlanta Falcons"
+    - "Atlanta Braves"
+    - "Georgia Bulldogs football"

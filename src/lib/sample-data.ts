@@ -13,7 +13,7 @@ export interface WorkItem { tag: string; title: string; sub: string }
 export interface WorkData { items: WorkItem[] }
 export interface GameLine { team: string; result: string; next: string }
 export interface SportsData { games: GameLine[] }
-export interface NewsItem { tag: string; title: string; sub: string }
+export interface NewsItem { tag: string; title: string; sub: string; url?: string }
 export interface NewsData { items: NewsItem[] }
 export interface CurioData {
   onThisDay: { year: string; text: string; link?: string };

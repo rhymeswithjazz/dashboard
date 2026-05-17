@@ -8,8 +8,18 @@ export interface Location {
   timezone: string;
 }
 
+export interface NewsConfig {
+  hn_count: number;
+  per_source_max: number;
+  total_max: number;
+  rss: string[];
+  reddit_subs: string[];
+  google_news_queries: string[];
+}
+
 export interface Config {
   location: Location;
+  news: NewsConfig;
 }
 
 let cached: Config | null = null;

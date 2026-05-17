@@ -10,8 +10,10 @@ const { data } = Astro.props;
     {data.items.map((it) => (
       <li>
         <span class="tag">{it.tag}</span>
-        <div class="title">{it.title}</div>
-        <div class="sub">{it.sub}</div>
+        <div class="title">
+          {it.url ? <a href={it.url} rel="noopener">{it.title}</a> : it.title}
+        </div>
+        {it.sub && <div class="sub">{it.sub}</div>}
       </li>
     ))}
   </ul>
