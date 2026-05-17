@@ -8,13 +8,18 @@ export interface Location {
   timezone: string;
 }
 
+export interface CategorySources {
+  hn?: boolean;
+  rss?: string[];
+  reddit_subs?: string[];
+  google_news_queries?: string[];
+}
+
 export interface NewsConfig {
   hn_count: number;
   per_source_max: number;
-  total_max: number;
-  rss: string[];
-  reddit_subs: string[];
-  google_news_queries: string[];
+  per_category_max: number;
+  categories: Record<string, CategorySources>;
 }
 
 export type SportsLeague = "mlb" | "nfl" | "college-football";

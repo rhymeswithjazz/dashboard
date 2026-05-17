@@ -59,6 +59,17 @@ const { title } = Astro.props;
   ul.feed .title a:hover { color: var(--accent); border-bottom-color: var(--accent); }
   ul.feed .sub { color: var(--muted); font-size: 0.9rem; margin-top: 0.15rem; }
 
+  /* News sub-section kickers (Tech / Sports / Local) */
+  .news h3.news-section {
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 1.5rem 0 0.5rem;
+    font-weight: 700;
+  }
+  .news h3.news-section:first-of-type { margin-top: 0.25rem; }
+
   /* Scores */
   .score {
     display: grid;

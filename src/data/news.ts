@@ -1,6 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
-import type { NewsItem, NewsData } from "../lib/sample-data";
-import type { NewsConfig } from "../lib/config";
+import type { NewsItem, NewsData, NewsSection } from "../lib/sample-data";
+import type { CategorySources, NewsConfig } from "../lib/config";
 
 const UA = "dashboard-personal/0.1 (https://github.com/rhymeswithjazz/dashboard)";
 const TIMEOUT = 10_000;
@@ -20,44 +20,82 @@ interface HNStory {
   type?: string;
 }
 
+interface CategoryTasks {
+  id: string;
+  label: string;
+  tasks: Promise<InternalItem[]>[];
+}
+
 export async function fetchNews(cfg: NewsConfig): Promise<NewsData | null> {
+  const buckets: CategoryTasks[] = [];
+  for (const [id, sources] of Object.entries(cfg.categories)) {
+    buckets.push({
+      id,
+      label: labelForCategory(id),
+      tasks: buildCategoryTasks(sources, cfg),
+    });
+  }
+
+  // Run every fetch across every category in one flight so a slow feed in
+  // one section doesn't hold up the others.
+  const allTasks = buckets.flatMap((b) => b.tasks);
+  const settled = await Promise.allSettled(allTasks);
+
+  const seen = new Set<string>();
+  const sections: NewsSection[] = [];
+  let cursor = 0;
+  let totalItems = 0;
+
+  for (const bucket of buckets) {
+    const taken = settled.slice(cursor, cursor + bucket.tasks.length);
+    cursor += bucket.tasks.length;
+
+    const items: InternalItem[] = [];
+    for (const r of taken) {
+      if (r.status === "fulfilled") items.push(...r.value);
+    }
+
+    // Dedupe within the section and against earlier sections.
+    const unique: InternalItem[] = [];
+    for (const it of items) {
+      const key = canonical(it.url) ?? it.title.toLowerCase().trim();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      unique.push(it);
+    }
+
+    unique.sort((a, b) => (b.date ?? 0) - (a.date ?? 0));
+    const sectionItems = unique.slice(0, cfg.per_category_max).map(stripInternal);
+    if (sectionItems.length === 0) continue;
+    sections.push({ id: bucket.id, label: bucket.label, items: sectionItems });
+    totalItems += sectionItems.length;
+  }
+
+  if (totalItems === 0) return null;
+  return { sections };
+}
+
+function buildCategoryTasks(sources: CategorySources, cfg: NewsConfig): Promise<InternalItem[]>[] {
   const tasks: Promise<InternalItem[]>[] = [];
-
-  tasks.push(fetchHN(cfg.hn_count, cfg.per_source_max));
-
-  for (const url of cfg.rss) {
+  if (sources.hn) {
+    tasks.push(fetchHN(cfg.hn_count, cfg.per_source_max));
+  }
+  for (const url of sources.rss ?? []) {
     tasks.push(fetchRss(url, labelForRss(url), cfg.per_source_max));
   }
-  for (const sub of cfg.reddit_subs) {
+  for (const sub of sources.reddit_subs ?? []) {
     const url = `https://www.reddit.com/r/${encodeURIComponent(sub)}/top/.rss?t=day`;
     tasks.push(fetchRss(url, `r/${sub}`, cfg.per_source_max));
   }
-  for (const q of cfg.google_news_queries) {
+  for (const q of sources.google_news_queries ?? []) {
     const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-US&gl=US&ceid=US:en`;
     tasks.push(fetchRss(url, `Google News · ${q}`, cfg.per_source_max));
   }
+  return tasks;
+}
 
-  const settled = await Promise.allSettled(tasks);
-  const all: InternalItem[] = [];
-  for (const r of settled) {
-    if (r.status === "fulfilled") all.push(...r.value);
-  }
-  if (all.length === 0) return null;
-
-  // Dedupe by canonicalized URL or by title.
-  const seen = new Set<string>();
-  const deduped: InternalItem[] = [];
-  for (const it of all) {
-    const key = canonical(it.url) ?? it.title.toLowerCase().trim();
-    if (seen.has(key)) continue;
-    seen.add(key);
-    deduped.push(it);
-  }
-
-  deduped.sort((a, b) => (b.date ?? 0) - (a.date ?? 0));
-
-  const items = deduped.slice(0, cfg.total_max).map(stripInternal);
-  return { items };
+function labelForCategory(id: string): string {
+  return id.charAt(0).toUpperCase() + id.slice(1);
 }
 
 function stripInternal(it: InternalItem): NewsItem {

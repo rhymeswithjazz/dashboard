@@ -93,9 +93,17 @@ function buildUserMessage(data: DashboardData, mode: Mode, city: string): string
   }
   lines.push("");
 
-  lines.push("NEWS (most recent first):");
-  for (const n of data.news.items.slice(0, 8)) {
-    lines.push(`  - ${n.title} [${n.tag}]`);
+  lines.push("NEWS (grouped by section, most recent first within each):");
+  let remaining = 8;
+  for (const section of data.news.sections) {
+    if (remaining <= 0) break;
+    if (section.items.length === 0) continue;
+    lines.push(`  [${section.label.toUpperCase()}]`);
+    for (const n of section.items) {
+      if (remaining <= 0) break;
+      lines.push(`  - ${n.title} [${n.tag}]`);
+      remaining--;
+    }
   }
 
   return lines.join("\n");

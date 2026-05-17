@@ -2,19 +2,25 @@
 import type { NewsData } from "../lib/sample-data";
 interface Props { data: NewsData }
 const { data } = Astro.props;
+const sections = data.sections.filter((s) => s.items.length > 0);
 ---
-<section class="section">
+<section class="section news">
   <h2>News</h2>
   <hr class="rule">
-  <ul class="feed">
-    {data.items.map((it) => (
-      <li>
-        <span class="tag">{it.tag}</span>
-        <div class="title">
-          {it.url ? <a href={it.url} rel="noopener">{it.title}</a> : it.title}
-        </div>
-        {it.sub && <div class="sub">{it.sub}</div>}
-      </li>
-    ))}
-  </ul>
+  {sections.map((section) => (
+    <>
+      <h3 class="news-section">{section.label}</h3>
+      <ul class="feed">
+        {section.items.map((it) => (
+          <li>
+            <span class="tag">{it.tag}</span>
+            <div class="title">
+              {it.url ? <a href={it.url} rel="noopener">{it.title}</a> : it.title}
+            </div>
+            {it.sub && <div class="sub">{it.sub}</div>}
+          </li>
+        ))}
+      </ul>
+    </>
+  ))}
 </section>

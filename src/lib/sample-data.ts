@@ -14,7 +14,8 @@ export interface WorkData { items: WorkItem[] }
 export interface GameLine { team: string; result: string; next: string }
 export interface SportsData { games: GameLine[] }
 export interface NewsItem { tag: string; title: string; sub: string; url?: string }
-export interface NewsData { items: NewsItem[] }
+export interface NewsSection { id: string; label: string; items: NewsItem[] }
+export interface NewsData { sections: NewsSection[] }
 export interface CurioData {
   onThisDay: { year: string; text: string; link?: string };
   word: { term: string; def: string; pos?: string };
@@ -75,13 +76,32 @@ const WARMUP: DashboardData = {
     ],
   },
   news: {
-    items: [
-      { tag: "Google News · Braves",  title: "Braves call up top prospect for series finale", sub: "ajc.com · 2h" },
-      { tag: "Google News · Falcons", title: "Falcons release rookie minicamp schedule",      sub: "espn.com · 5h" },
-      { tag: "r/AtlantaBraves",       title: "Strider's slider has been unreal lately",       sub: "432 upvotes · 87 comments" },
-      { tag: "Hacker News",           title: "Show HN: I built a tiny SQLite for the browser", sub: "312 points · 84 comments" },
-      { tag: "Hacker News",           title: "Why I left Big Tech to grow garlic",             sub: "589 points · 217 comments" },
-      { tag: "Anthropic blog",        title: "Introducing Opus 4.7",                           sub: "anthropic.com · today" },
+    sections: [
+      {
+        id: "tech",
+        label: "Tech",
+        items: [
+          { tag: "Hacker News",    title: "Show HN: I built a tiny SQLite for the browser", sub: "312 points · 84 comments" },
+          { tag: "Hacker News",    title: "Why I left Big Tech to grow garlic",             sub: "589 points · 217 comments" },
+          { tag: "anthropic.com",  title: "Introducing Opus 4.7",                           sub: "today" },
+        ],
+      },
+      {
+        id: "sports",
+        label: "Sports",
+        items: [
+          { tag: "Google News · Atlanta Braves",  title: "Braves call up top prospect for series finale", sub: "2h ago" },
+          { tag: "Google News · Atlanta Falcons", title: "Falcons release rookie minicamp schedule",      sub: "5h ago" },
+          { tag: "r/AtlantaBraves",               title: "Strider's slider has been unreal lately",       sub: "432 upvotes · 87 comments" },
+        ],
+      },
+      {
+        id: "local",
+        label: "Local",
+        items: [
+          { tag: "Google News · Carrollton, GA", title: "City council reviews downtown traffic study", sub: "today" },
+        ],
+      },
     ],
   },
   picture: null,
@@ -133,13 +153,32 @@ const COOLDOWN: DashboardData = {
     ],
   },
   news: {
-    items: [
-      { tag: "Google News · Braves",  title: "Olson, Riley homer in 5–0 win over Mets", sub: "ajc.com · 1h" },
-      { tag: "Google News · Falcons", title: "Falcons trim roster to 85, waive two", sub: "espn.com · 4h" },
-      { tag: "r/AtlantaBraves",       title: "What an outing from Strider tonight",    sub: "1.2k upvotes · 312 comments" },
-      { tag: "Hacker News",           title: "The rise and fall of the iPad as a creative tool", sub: "412 points · 198 comments" },
-      { tag: "Hacker News",           title: "A short history of monospace fonts", sub: "267 points · 64 comments" },
-      { tag: "Anthropic blog",        title: "Introducing Opus 4.7",                  sub: "anthropic.com · today" },
+    sections: [
+      {
+        id: "tech",
+        label: "Tech",
+        items: [
+          { tag: "Hacker News",    title: "The rise and fall of the iPad as a creative tool", sub: "412 points · 198 comments" },
+          { tag: "Hacker News",    title: "A short history of monospace fonts",               sub: "267 points · 64 comments" },
+          { tag: "anthropic.com",  title: "Introducing Opus 4.7",                             sub: "today" },
+        ],
+      },
+      {
+        id: "sports",
+        label: "Sports",
+        items: [
+          { tag: "Google News · Atlanta Braves",  title: "Olson, Riley homer in 5–0 win over Mets", sub: "1h ago" },
+          { tag: "Google News · Atlanta Falcons", title: "Falcons trim roster to 85, waive two",    sub: "4h ago" },
+          { tag: "r/AtlantaBraves",               title: "What an outing from Strider tonight",     sub: "1.2k upvotes · 312 comments" },
+        ],
+      },
+      {
+        id: "local",
+        label: "Local",
+        items: [
+          { tag: "Google News · Carrollton, GA", title: "City council reviews downtown traffic study", sub: "today" },
+        ],
+      },
     ],
   },
   picture: null,

@@ -15,21 +15,28 @@ sports:
     - { league: "college-football", team_id: 61, label: "Bulldogs" }
 
 news:
+  per_category_max: 4    # cap items per section after merge
   hn_count: 5            # how many top HN stories to fetch
   per_source_max: 2      # cap items per individual feed/source
-  total_max: 10          # final cap after merge
-  rss:
-    - "https://www.anthropic.com/rss.xml"
-    - "https://www.theverge.com/rss/partner/subscriber-only-full-feed/rss.xml"
-  reddit_subs:
-    - "AtlantaBraves"
-    - "falcons"
-    - "georgiabulldogs"
-    - "mma"
-    - "ClaudeCode"
-  google_news_queries:
-    - "Atlanta Falcons"
-    - "Atlanta Braves"
-    - "Georgia Bulldogs football"
-    - "Carrollton, GA"
+  categories:
+    tech:
+      hn: true
+      rss:
+        - "https://www.anthropic.com/rss.xml"
+        - "https://www.theverge.com/rss/partner/subscriber-only-full-feed/rss.xml"
+      reddit_subs:
+        - "ClaudeCode"
+    sports:
+      reddit_subs:
+        - "AtlantaBraves"
+        - "falcons"
+        - "georgiabulldogs"
+        - "mma"
+      google_news_queries:
+        - "Atlanta Falcons"
+        - "Atlanta Braves"
+        - "Georgia Bulldogs football"
+    local:
+      google_news_queries:
+        - "Carrollton, GA"
 
