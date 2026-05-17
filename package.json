@@ -12,6 +12,7 @@
     "check": "astro check"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.96.0",
     "astro": "^5.0.0",
     "fast-xml-parser": "^5.8.0",
     "node-ical": "^0.26.1",

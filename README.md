@@ -73,6 +73,7 @@ page frontmatter and parallelized with `Promise.all`.
      URLs to read. Google Calendar exposes one under Settings →
      "Secret address in iCal format". If absent, the calendar
      widget falls back to placeholder events.
-   - `ANTHROPIC_API_KEY` — for the AI briefing (not yet wired)
+   - `ANTHROPIC_API_KEY` — Claude API key for the AI briefing.
+     Without it, the briefing falls back to a placeholder paragraph.
    - `GH_DASHBOARD_PAT` — fine-grained PAT for cross-repo PR
-     queries (not yet wired)
+     queries (Work widget currently disabled)

@@ -3,7 +3,6 @@ import Newsprint from "../layouts/Newsprint.astro";
 import Masthead from "../components/Masthead.astro";
 import Briefing from "../components/Briefing.astro";
 import Today from "../components/Today.astro";
-import Work from "../components/Work.astro";
 import Sports from "../components/Sports.astro";
 import News from "../components/News.astro";
 import Picture from "../components/Picture.astro";
@@ -17,6 +16,7 @@ import { fetchWordOfTheDay } from "../data/mw";
 import { fetchNews } from "../data/news";
 import { fetchSports } from "../data/sports";
 import { fetchCalendar } from "../data/calendar";
+import { fetchBriefing } from "../data/briefing";
 
 const { mode, label, builtAt } = getModeMeta();
 const config = loadConfig();
@@ -35,8 +35,6 @@ const word = mwWord ?? pickWord(builtAt);
 
 const calendar = {
   heading: mode === "warmup" ? "Today" : "Tomorrow",
-  // calEvents === null means not configured → show sample so the section looks alive.
-  // calEvents === [] means configured but nothing scheduled → show empty (fail-loud).
   events: calEvents ?? fallback.calendar.events,
 };
 
@@ -54,6 +52,15 @@ const data = {
   },
 };
 
+// Briefing depends on everything else, so it runs after the parallel batch.
+const briefing = await fetchBriefing(
+  data,
+  mode,
+  config.location.city,
+  process.env["ANTHROPIC_API_KEY"],
+);
+data.briefing = briefing ?? fallback.briefing;
+
 const dateLabel = formatDateET(builtAt);
 const volume = volumeNumber(builtAt);
 const builtLabel = `Printed at ${formatTimeET(builtAt)} ET · dashboard.example.com`;
@@ -64,17 +71,11 @@ const todayKicker =
   mode === "warmup"
     ? `${config.location.city} · the day ahead`
     : `${config.location.city} · what's on deck tomorrow`;
-
-const workKicker =
-  mode === "warmup"
-    ? "Awaiting your review. One of yours is red."
-    : "Day's tally and what's still open.";
 ---
 <Newsprint title={`The Daily · ${label}`}>
   <Masthead modeLabel={label} dateLabel={dateLabel} volume={volume} />
   <Briefing heading={briefingHeading} data={data.briefing} />
   <Today weather={data.weather} calendar={data.calendar} kicker={todayKicker} />
-  <Work data={data.work} kicker={workKicker} />
   <Sports data={data.sports} />
   <News data={data.news} />
   {data.picture && <Picture data={data.picture} />}
