@@ -55,6 +55,7 @@ jobs:
         run: npm run build
         env:
           MW_API_KEY: ${{ secrets.MW_API_KEY }}
+          CAL_ICS_URLS: ${{ secrets.CAL_ICS_URLS }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -16,20 +16,29 @@ import { fetchWikipediaPack, pickWord } from "../data/wikipedia";
 import { fetchWordOfTheDay } from "../data/mw";
 import { fetchNews } from "../data/news";
 import { fetchSports } from "../data/sports";
+import { fetchCalendar } from "../data/calendar";
 
 const { mode, label, builtAt } = getModeMeta();
 const config = loadConfig();
 const fallback = sampleData(mode);
 
-const [weather, wiki, mwWord, news, sports] = await Promise.all([
+const [weather, wiki, mwWord, news, sports, calEvents] = await Promise.all([
   fetchWeather(config.location, mode),
   fetchWikipediaPack(),
   fetchWordOfTheDay(process.env["MW_API_KEY"]),
   fetchNews(config.news),
   fetchSports(config.sports, config.location.timezone),
+  fetchCalendar(process.env["CAL_ICS_URLS"], mode, config.location.timezone),
 ]);
 
 const word = mwWord ?? pickWord(builtAt);
+
+const calendar = {
+  heading: mode === "warmup" ? "Today" : "Tomorrow",
+  // calEvents === null means not configured → show sample so the section looks alive.
+  // calEvents === [] means configured but nothing scheduled → show empty (fail-loud).
+  events: calEvents ?? fallback.calendar.events,
+};
 
 const data = {
   ...fallback,
@@ -37,6 +46,7 @@ const data = {
   picture: wiki.picture,
   news: news ?? fallback.news,
   sports: sports ?? fallback.sports,
+  calendar,
   curio: {
     onThisDay: wiki.onThisDay ?? fallback.curio.onThisDay,
     word,

@@ -69,6 +69,10 @@ page frontmatter and parallelized with `Promise.all`.
    - `MW_API_KEY` — Merriam-Webster Collegiate Dictionary API key
      (enriches the word-of-the-day; falls back to RSS-only and then
      to a curated list if absent)
+   - `CAL_ICS_URLS` — comma-separated list of ICS (iCal) calendar
+     URLs to read. Google Calendar exposes one under Settings →
+     "Secret address in iCal format". If absent, the calendar
+     widget falls back to placeholder events.
    - `ANTHROPIC_API_KEY` — for the AI briefing (not yet wired)
    - `GH_DASHBOARD_PAT` — fine-grained PAT for cross-repo PR
      queries (not yet wired)
