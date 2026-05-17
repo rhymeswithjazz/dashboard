@@ -9,9 +9,21 @@ import News from "../components/News.astro";
 import Curiosity from "../components/Curiosity.astro";
 import { getModeMeta, formatDateET, formatTimeET, volumeNumber } from "../lib/mode";
 import { sampleData } from "../lib/sample-data";
+import { loadConfig } from "../lib/config";
+import { fetchWeather } from "../data/weather";
 
 const { mode, label, builtAt } = getModeMeta();
-const data = sampleData(mode);
+const config = loadConfig();
+const fallback = sampleData(mode);
+
+const [weather] = await Promise.all([
+  fetchWeather(config.location, mode),
+]);
+
+const data = {
+  ...fallback,
+  weather: weather ?? fallback.weather,
+};
 
 const dateLabel = formatDateET(builtAt);
 const volume = volumeNumber(builtAt);
@@ -21,8 +33,8 @@ const briefingHeading = mode === "warmup" ? "Morning Briefing" : "Evening Briefi
 
 const todayKicker =
   mode === "warmup"
-    ? "Atlanta · the day ahead"
-    : "Atlanta · what's on deck tomorrow";
+    ? `${config.location.city} · the day ahead`
+    : `${config.location.city} · what's on deck tomorrow`;
 
 const workKicker =
   mode === "warmup"

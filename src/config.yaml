@@ -1,0 +1,8 @@
+# User-editable configuration for the dashboard.
+# Values here are baked into the page at build time; no secrets belong in this file.
+
+location:
+  city: "Atlanta, GA"
+  lat: 33.749
+  lon: -84.388
+  timezone: "America/New_York"
