@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard · May 17</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f1f3f7;
+    --card: #ffffff;
+    --text: #0f1014;
+    --muted: #6b7280;
+    --line: rgba(15,16,20,0.06);
+    --shadow: 0 1px 2px rgba(15,16,20,0.04), 0 6px 20px rgba(15,16,20,0.06);
+    --radius: 22px;
+
+    --briefing-from: #a78bfa;
+    --briefing-to:   #f0abfc;
+    --weather:   #dbeafe;
+    --weather-i: #1e40af;
+    --calendar:  #ede9fe;
+    --calendar-i:#5b21b6;
+    --github:    #dcfce7;
+    --github-i:  #166534;
+    --sports:    #fee2e2;
+    --sports-i:  #991b1b;
+    --news:      #fef3c7;
+    --news-i:    #854d0e;
+    --curio:     #fce7f3;
+    --curio-i:   #9d174d;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #07080b;
+      --card: #15171c;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --line: rgba(255,255,255,0.06);
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 6px 24px rgba(0,0,0,0.5);
+      --weather:   #0c2545;
+      --weather-i: #93c5fd;
+      --calendar:  #2a1a55;
+      --calendar-i:#c4b5fd;
+      --github:    #0d2e1c;
+      --github-i:  #86efac;
+      --sports:    #3a0f10;
+      --sports-i:  #fca5a5;
+      --news:      #3a2a07;
+      --news-i:    #fde68a;
+      --curio:     #3a1126;
+      --curio-i:   #f9a8d4;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+  body {
+    font-family: -apple-system, "SF Pro Text", "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 1rem 0.9rem 4rem; }
+  .topbar { display: flex; justify-content: space-between; align-items: baseline; padding: 0.5rem 0.25rem 1rem; }
+  .topbar .day { font-size: 1.0625rem; font-weight: 600; }
+  .topbar .built { font-size: 0.75rem; color: var(--muted); }
+
+  .grid { display: grid; grid-template-columns: 1fr; gap: 0.9rem; }
+  @media (min-width: 720px) {
+    .grid { grid-template-columns: repeat(6, 1fr); }
+    .card.briefing { grid-column: span 6; }
+    .card.weather  { grid-column: span 3; }
+    .card.calendar { grid-column: span 3; }
+    .card.github   { grid-column: span 3; }
+    .card.sports   { grid-column: span 3; }
+    .card.news     { grid-column: span 4; }
+    .card.curio    { grid-column: span 2; }
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.15rem;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .card h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin: 0 0 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .card h3 .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: currentColor; opacity: 0.5; }
+
+  /* Briefing card with gradient */
+  .briefing {
+    background: linear-gradient(135deg, var(--briefing-from), var(--briefing-to));
+    color: #1a1124;
+  }
+  .briefing h3 { color: rgba(26,17,36,0.7); }
+  .briefing p { font-size: 1.0625rem; line-height: 1.45; margin: 0; font-weight: 500; }
+
+  /* Tinted cards */
+  .weather  { background: var(--weather);  color: var(--weather-i); }
+  .calendar { background: var(--calendar); color: var(--calendar-i); }
+  .github   { background: var(--github);   color: var(--github-i); }
+  .sports   { background: var(--sports);   color: var(--sports-i); }
+  .news     { background: var(--news);     color: var(--news-i); }
+  .curio    { background: var(--curio);    color: var(--curio-i); }
+  .weather h3, .calendar h3, .github h3, .sports h3, .news h3, .curio h3 { color: inherit; opacity: 0.75; }
+  .weather .body, .calendar .body, .github .body, .sports .body, .news .body, .curio .body { color: var(--text); }
+
+  /* Weather body */
+  .wx-now { display: flex; align-items: baseline; gap: 0.5rem; font-weight: 600; }
+  .wx-now .temp { font-size: 2.25rem; line-height: 1; }
+  .wx-now .cond { color: var(--muted); }
+  .wx-sub { color: var(--muted); margin-top: 0.35rem; font-size: 0.875rem; }
+
+  /* Calendar list */
+  .cal-row { display: flex; gap: 0.75rem; padding: 0.5rem 0; border-top: 1px solid var(--line); font-size: 0.9375rem; }
+  .cal-row:first-child { border-top: 0; padding-top: 0.15rem; }
+  .cal-row .t { color: var(--muted); flex: 0 0 4.25rem; font-variant-numeric: tabular-nums; }
+
+  /* Lists */
+  .items { display: flex; flex-direction: column; gap: 0.55rem; }
+  .item { font-size: 0.9375rem; line-height: 1.35; }
+  .item .src { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .item .ttl { font-weight: 500; }
+
+  /* Sports grid */
+  .game { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; padding: 0.45rem 0; border-top: 1px solid var(--line); font-size: 0.9375rem; }
+  .game:first-child { border-top: 0; padding-top: 0; }
+  .game .team { font-weight: 600; }
+  .game .res { color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
+  .win { color: #16a34a; font-weight: 600; }
+
+  /* Curio */
+  .curio .body p { margin: 0 0 0.65rem; font-size: 0.9rem; line-height: 1.45; }
+  .curio .body p:last-child { margin-bottom: 0; }
+  .curio .body strong { display: block; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; margin-bottom: 0.1rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="topbar">
+    <div class="day">Sunday · May 17 · Atlanta</div>
+    <div class="built">built 06:00 ET</div>
+  </header>
+
+  <div class="grid">
+
+    <article class="card briefing">
+      <h3>Morning briefing</h3>
+      <p>Braves blanked the Mets 5–0; Strider went 8 IP with 11 K. Two PRs need your review — both small. Rain after 4p, plan around it. Calendar light: 1:1 at 2, Dr. Patel at 4:30.</p>
+    </article>
+
+    <article class="card weather">
+      <h3><span class="dot"></span> Weather</h3>
+      <div class="body">
+        <div class="wx-now"><span class="temp">72°</span><span class="cond">partly cloudy</span></div>
+        <div class="wx-sub">H 81° / L 64° · rain 60% after 4p</div>
+      </div>
+    </article>
+
+    <article class="card calendar">
+      <h3><span class="dot"></span> Today</h3>
+      <div class="body">
+        <div class="cal-row"><span class="t">2:00 pm</span><span>1:1 with Sarah</span></div>
+        <div class="cal-row"><span class="t">4:30 pm</span><span>Dr. Patel — annual</span></div>
+      </div>
+    </article>
+
+    <article class="card github">
+      <h3><span class="dot"></span> GitHub</h3>
+      <div class="body items">
+        <div class="item"><div class="src">review · org/foo #142</div><div class="ttl">fix flaky test in auth-spec</div></div>
+        <div class="item"><div class="src">review · org/bar #88</div><div class="ttl">add caching to dashboard query</div></div>
+        <div class="item"><div class="src">yours · org/web #301 · ci red</div><div class="ttl">feat: morning briefing</div></div>
+      </div>
+    </article>
+
+    <article class="card sports">
+      <h3><span class="dot"></span> Sports</h3>
+      <div class="body">
+        <div class="game"><span class="team">Braves</span><span class="res"><span class="win">W 5–0</span> NYM · 7:20p</span></div>
+        <div class="game"><span class="team">Falcons</span><span class="res">offseason</span></div>
+        <div class="game"><span class="team">Bulldogs</span><span class="res">Clemson Aug 30</span></div>
+      </div>
+    </article>
+
+    <article class="card news">
+      <h3><span class="dot"></span> News</h3>
+      <div class="body items">
+        <div class="item"><div class="src">google · braves</div><div class="ttl">Braves call up top prospect for series finale</div></div>
+        <div class="item"><div class="src">google · falcons</div><div class="ttl">Falcons release rookie minicamp schedule</div></div>
+        <div class="item"><div class="src">r/atlantabraves</div><div class="ttl">Strider's slider has been unreal lately</div></div>
+        <div class="item"><div class="src">hn</div><div class="ttl">Show HN: I built a tiny SQLite for the browser</div></div>
+        <div class="item"><div class="src">hn</div><div class="ttl">Why I left Big Tech to grow garlic</div></div>
+        <div class="item"><div class="src">anthropic</div><div class="ttl">Introducing Opus 4.7</div></div>
+      </div>
+    </article>
+
+    <article class="card curio">
+      <h3><span class="dot"></span> Curiosities</h3>
+      <div class="body">
+        <p><strong>On this day · 1954</strong>Brown v. Board of Education is decided.</p>
+        <p><strong>Word</strong><em>Sonder</em> — the realization that each passerby has a life as vivid as your own.</p>
+        <p><strong>Wiki</strong>The Gympie-Gympie tree of Queensland is among the most painfully stinging plants known.</p>
+      </div>
+    </article>
+
+  </div>
+</div>
+</body>
+</html>

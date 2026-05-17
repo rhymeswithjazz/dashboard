@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard design mocks</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+    line-height: 1.5;
+  }
+  h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  p.lede { color: #666; margin-top: 0; margin-bottom: 2rem; }
+  ol { padding-left: 0; list-style: none; counter-reset: design; }
+  li { counter-increment: design; margin-bottom: 1.25rem; padding: 1rem 1.25rem; border: 1px solid #ddd; border-radius: 8px; }
+  li::before { content: counter(design) ". "; font-weight: 600; color: #999; }
+  a { color: inherit; text-decoration: none; font-weight: 600; }
+  a:hover { text-decoration: underline; }
+  .desc { display: block; font-weight: 400; color: #666; margin-top: 0.5rem; font-size: 0.9375rem; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #111; color: #eee; }
+    li { border-color: #333; }
+    p.lede, .desc { color: #aaa; }
+  }
+</style>
+</head>
+<body>
+  <h1>Dashboard design directions</h1>
+  <p class="lede">Five mobile-first mocks with the same dummy data. Pick a favorite (or a hybrid) and the rest get deleted.</p>
+  <ol>
+    <li>
+      <a href="./1-newsprint.html">Newsprint</a>
+      <span class="desc">Editorial / NYT feel. Serif headlines, cream paper, hairline rules.</span>
+    </li>
+    <li>
+      <a href="./2-reader.html">Reader</a>
+      <span class="desc">Pocket/Readwise vibe. Quiet typography, no card chrome, system light/dark.</span>
+    </li>
+    <li>
+      <a href="./3-bento.html">Bento</a>
+      <span class="desc">Apple/Linear bento grid. Rounded cards, per-widget accent color.</span>
+    </li>
+    <li>
+      <a href="./4-terminal.html">Terminal</a>
+      <span class="desc">Monospace, ASCII dividers, amber-on-black dark default.</span>
+    </li>
+    <li>
+      <a href="./5-brutalist.html">Brutalist</a>
+      <span class="desc">All-caps, hard borders, electric accent, max density.</span>
+    </li>
+  </ol>
+</body>
+</html>

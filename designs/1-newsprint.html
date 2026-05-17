@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Daily — Sun May 17 2026</title>
+<style>
+  :root {
+    --paper: #faf6ef;
+    --ink: #1f1a14;
+    --rule: #1f1a14;
+    --muted: #5a544a;
+    --accent: #8a1c13;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); }
+  body {
+    font-family: "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+
+  /* Masthead */
+  .mast { text-align: center; padding: 0.5rem 0 1rem; border-bottom: 3px double var(--rule); }
+  .mast .name { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1; margin: 0; }
+  .mast .meta { display: flex; justify-content: space-between; margin-top: 0.75rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+  /* Section */
+  .section { margin-top: 2.25rem; }
+  .section > h2 { font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.25rem; font-weight: 700; }
+  .section > h2 + .rule { border: 0; border-top: 1px solid var(--rule); margin: 0 0 1rem; }
+  .kicker { font-style: italic; color: var(--muted); margin: 0 0 0.5rem; font-size: 0.95rem; }
+
+  /* Briefing (lede) */
+  .briefing { font-size: 1.25rem; line-height: 1.5; font-style: italic; }
+  .briefing::first-letter { font-size: 3em; float: left; line-height: 0.85; padding: 0.2rem 0.5rem 0 0; font-weight: 700; font-style: normal; color: var(--accent); }
+
+  /* Weather & calendar inline lines */
+  dl.line { display: grid; grid-template-columns: 6rem 1fr; row-gap: 0.4rem; margin: 0; }
+  dl.line dt { color: var(--muted); font-variant-numeric: tabular-nums; }
+  dl.line dd { margin: 0; }
+
+  /* Lists of items (news, github) */
+  ul.feed { list-style: none; padding: 0; margin: 0; }
+  ul.feed li { padding: 0.75rem 0; border-top: 1px solid rgba(31,26,20,0.12); }
+  ul.feed li:first-child { border-top: 0; padding-top: 0; }
+  ul.feed .tag { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.15rem; }
+  ul.feed .title { font-size: 1.05rem; font-weight: 600; }
+  ul.feed .sub { color: var(--muted); font-size: 0.9rem; margin-top: 0.15rem; }
+
+  /* Scores */
+  .score { display: flex; align-items: baseline; justify-content: space-between; padding: 0.6rem 0; border-top: 1px solid rgba(31,26,20,0.12); }
+  .score:first-child { border-top: 0; padding-top: 0; }
+  .score .team { font-weight: 700; }
+  .score .result { font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 700; }
+  .score .next { color: var(--muted); font-size: 0.85rem; }
+
+  /* Curiosity */
+  .curio { font-size: 0.95rem; }
+  .curio p { margin: 0 0 0.75rem; }
+  .curio strong { font-variant: small-caps; letter-spacing: 0.05em; color: var(--accent); }
+
+  /* Colophon */
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); text-align: center; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+  @media (min-width: 720px) {
+    body { font-size: 18px; }
+    .wrap { padding-top: 2.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <h1 class="name">The Daily</h1>
+    <div class="meta">
+      <span>Sun · May 17 · 2026</span>
+      <span>Vol. MMXXVI · No. 137</span>
+    </div>
+  </header>
+
+  <section class="section">
+    <h2>Morning Briefing</h2>
+    <hr class="rule">
+    <p class="briefing">Braves blanked the Mets 5–0; Strider went eight innings with eleven strikeouts. Two pull requests need your review — both small. Rain pushes in after four, so plan around it. Calendar is light: a 1:1 at two and Dr. Patel at four-thirty.</p>
+  </section>
+
+  <section class="section">
+    <h2>Today</h2>
+    <hr class="rule">
+    <p class="kicker">Atlanta · Sunday</p>
+    <dl class="line">
+      <dt>Weather</dt><dd>72°F partly cloudy · H 81 / L 64 · rain 60% after 4p</dd>
+      <dt>2:00 pm</dt><dd>1:1 with Sarah</dd>
+      <dt>4:30 pm</dt><dd>Dr. Patel — annual</dd>
+    </dl>
+  </section>
+
+  <section class="section">
+    <h2>Work</h2>
+    <hr class="rule">
+    <p class="kicker">Two PRs awaiting your review. One of yours is red.</p>
+    <ul class="feed">
+      <li>
+        <span class="tag">Review · org/foo #142</span>
+        <div class="title">fix flaky test in auth-spec</div>
+        <div class="sub">opened by @jdoe · 2 files · +18 −4</div>
+      </li>
+      <li>
+        <span class="tag">Review · org/bar #88</span>
+        <div class="title">add caching to dashboard query</div>
+        <div class="sub">opened by @asmith · 1 file · +42 −12</div>
+      </li>
+      <li>
+        <span class="tag">Yours · org/web #301 · CI red</span>
+        <div class="title">feat: morning briefing</div>
+        <div class="sub">2 of 3 checks failing</div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Sports</h2>
+    <hr class="rule">
+    <div class="score">
+      <span class="team">Braves</span>
+      <span class="result">W 5–0 vs NYM</span>
+      <span class="next">Today 7:20p</span>
+    </div>
+    <div class="score">
+      <span class="team">Falcons</span>
+      <span class="result">offseason</span>
+      <span class="next">camp Jul 23</span>
+    </div>
+    <div class="score">
+      <span class="team">Bulldogs</span>
+      <span class="result">offseason</span>
+      <span class="next">Clemson · Aug 30</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>News</h2>
+    <hr class="rule">
+    <ul class="feed">
+      <li>
+        <span class="tag">Google News · Braves</span>
+        <div class="title">Braves call up top prospect for series finale</div>
+        <div class="sub">ajc.com · 2h</div>
+      </li>
+      <li>
+        <span class="tag">Google News · Falcons</span>
+        <div class="title">Falcons release rookie minicamp schedule</div>
+        <div class="sub">espn.com · 5h</div>
+      </li>
+      <li>
+        <span class="tag">r/AtlantaBraves</span>
+        <div class="title">Strider's slider has been unreal lately</div>
+        <div class="sub">432 upvotes · 87 comments</div>
+      </li>
+      <li>
+        <span class="tag">Hacker News</span>
+        <div class="title">Show HN: I built a tiny SQLite for the browser</div>
+        <div class="sub">312 points · 84 comments</div>
+      </li>
+      <li>
+        <span class="tag">Hacker News</span>
+        <div class="title">Why I left Big Tech to grow garlic</div>
+        <div class="sub">589 points · 217 comments</div>
+      </li>
+      <li>
+        <span class="tag">Anthropic blog</span>
+        <div class="title">Introducing Opus 4.7</div>
+        <div class="sub">anthropic.com · today</div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>The Curiosities</h2>
+    <hr class="rule">
+    <div class="curio">
+      <p><strong>On this day, 1954.</strong> The Supreme Court decides <em>Brown v. Board of Education</em>, ruling racial segregation in public schools unconstitutional.</p>
+      <p><strong>Word.</strong> <em>Sonder</em> (n.) — the realization that each passerby is living a life as vivid and complex as your own.</p>
+      <p><strong>From the encyclopedia.</strong> The Gympie-Gympie tree of Queensland is among the most painfully stinging plants known; survivors describe the sensation as lasting months.</p>
+    </div>
+  </section>
+
+  <footer>Printed at 06:00 ET · dashboard.example.com</footer>
+
+</div>
+</body>
+</html>

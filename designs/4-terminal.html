@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dashboard ~ 2026-05-17</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --fg: #ffb454;
+    --dim: #8b6c3a;
+    --hi: #f7f7f2;
+    --green: #7fd962;
+    --red: #ff6b6b;
+    --cyan: #5ac8d6;
+    --magenta: #d67ad6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+  body {
+    font-family: "JetBrains Mono", "SF Mono", "Menlo", "Consolas", ui-monospace, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 1rem 0.9rem 4rem; }
+
+  pre { margin: 0; font: inherit; color: inherit; white-space: pre-wrap; }
+  .row { display: grid; grid-template-columns: 7rem 1fr; gap: 0.5rem; }
+  .row .k { color: var(--dim); }
+  .row .v { color: var(--hi); }
+
+  .head {
+    border-top: 1px dashed var(--dim);
+    border-bottom: 1px dashed var(--dim);
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+  }
+  .head .line { display: flex; justify-content: space-between; }
+  .blink { animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .section { margin: 1.5rem 0; }
+  .section h2 {
+    font-size: 0.875rem;
+    color: var(--cyan);
+    margin: 0 0 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .section h2::before { content: "── "; color: var(--dim); }
+  .section h2::after  { content: " "; }
+  .tag { color: var(--dim); }
+  .ok  { color: var(--green); }
+  .err { color: var(--red); }
+  .hl  { color: var(--magenta); }
+
+  .briefing {
+    border: 1px solid var(--dim);
+    padding: 0.85rem 1rem;
+    color: var(--hi);
+    line-height: 1.55;
+    position: relative;
+  }
+  .briefing::before {
+    content: "BRIEFING";
+    position: absolute;
+    top: -0.55rem; left: 0.7rem;
+    background: var(--bg);
+    color: var(--magenta);
+    padding: 0 0.4rem;
+    font-size: 0.75rem;
+  }
+
+  .item { padding: 0.2rem 0; }
+  .item .src { color: var(--dim); }
+  .item .ttl { color: var(--hi); }
+  .item .meta { color: var(--dim); font-size: 0.8125rem; }
+
+  .footline {
+    margin-top: 2rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--dim);
+    color: var(--dim);
+    font-size: 0.8125rem;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <div class="line"><span><span class="hi" style="color:var(--magenta)">~/dashboard</span> $ <span class="blink">█</span></span><span class="tag">2026-05-17 06:00 ET</span></div>
+    <div class="line"><span class="tag">host</span><span>atl · 33.74°N 84.39°W · clear network</span></div>
+  </header>
+
+  <section class="section">
+    <pre class="briefing">Braves blanked the Mets <span class="ok">5–0</span>; Strider went 8 IP / 11 K. <span class="hl">2 PRs</span> need your review — both small. Rain after <span class="hl">16:00</span>, plan around it. Calendar light: <span class="hl">14:00</span> 1:1 · <span class="hl">16:30</span> Dr. Patel.</pre>
+  </section>
+
+  <section class="section">
+    <h2>[WX]   weather</h2>
+<pre>  now   <span class="hl">72°F</span> partly cloudy
+  hi/lo 81 / 64
+  rain  60% after 16:00  ☔
+</pre>
+  </section>
+
+  <section class="section">
+    <h2>[CAL]  today</h2>
+<pre>  14:00  1:1 with Sarah
+  16:30  Dr. Patel — annual
+</pre>
+  </section>
+
+  <section class="section">
+    <h2>[GH]   work</h2>
+<pre>  <span class="tag">review</span>  org/foo#142   fix flaky test in auth-spec        <span class="tag">@jdoe   +18 -4</span>
+  <span class="tag">review</span>  org/bar#88    add caching to dashboard query     <span class="tag">@asmith +42 -12</span>
+  <span class="tag">yours </span>  org/web#301   feat: morning briefing             <span class="err">CI 2/3 failing ✗</span>
+  <span class="tag">issue </span>  org/foo#205   "calendar widget tz off-by-one"
+</pre>
+  </section>
+
+  <section class="section">
+    <h2>[ATL]  sports</h2>
+<pre>  MLB    Braves     <span class="ok">W 5–0</span> vs NYM        next: today 19:20 vs NYM
+  NFL    Falcons    offseason             camp: Jul 23
+  NCAAF  Bulldogs   offseason             vs Clemson · Aug 30
+</pre>
+  </section>
+
+  <section class="section">
+    <h2>[NEWS] feeds</h2>
+<pre>  <span class="tag">[g-news/braves ]</span>  Braves call up top prospect for series finale       <span class="tag">ajc · 2h</span>
+  <span class="tag">[g-news/falcons]</span>  Falcons release rookie minicamp schedule            <span class="tag">espn · 5h</span>
+  <span class="tag">[reddit/braves ]</span>  Strider's slider has been unreal lately             <span class="tag">432 ▲ · 87 c</span>
+  <span class="tag">[hn            ]</span>  Show HN: I built a tiny SQLite for the browser      <span class="tag">312 ▲ · 84 c</span>
+  <span class="tag">[hn            ]</span>  Why I left Big Tech to grow garlic                  <span class="tag">589 ▲ · 217 c</span>
+  <span class="tag">[anthropic.com ]</span>  Introducing Opus 4.7                                <span class="tag">today</span>
+</pre>
+  </section>
+
+  <section class="section">
+    <h2>[FYI]  curio</h2>
+<pre>  on-this-day · 1954 · Brown v. Board of Education decided.
+  word              · sonder (n.) — the realization that each
+                      passerby is living a life as vivid as your own.
+  random-wiki       · the Gympie-Gympie tree of Queensland is among
+                      the most painfully stinging plants known.
+</pre>
+  </section>
+
+  <footer class="footline">
+    <span>build: 06:00 ET · sha: a4f7c91</span>
+    <span>deploy: gh-pages → dashboard.example.com</span>
+    <span>exit 0</span>
+  </footer>
+
+</div>
+</body>
+</html>
