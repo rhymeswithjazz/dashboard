@@ -20,11 +20,16 @@ news:
   total_max: 10          # final cap after merge
   rss:
     - "https://www.anthropic.com/rss.xml"
+    - "https://www.theverge.com/rss/partner/subscriber-only-full-feed/rss.xml"
   reddit_subs:
-    - "AtlantaBraves"
+    - "braves"
     - "falcons"
     - "georgiabulldogs"
+    - "mma"
+    - "ClaudeCode"
   google_news_queries:
     - "Atlanta Falcons"
     - "Atlanta Braves"
     - "Georgia Bulldogs football"
+    - "Carrollton, GA"
+
