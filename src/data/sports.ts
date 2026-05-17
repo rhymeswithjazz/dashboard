@@ -24,7 +24,7 @@ interface EspnCompetitor {
   // ESPN returns this as a plain string on most endpoints, but as
   // { value, displayValue } on some scoreboard responses. Accept both.
   score?: string | { value?: number; displayValue?: string };
-  team?: { id?: string; abbreviation?: string; displayName?: string };
+  team?: { id?: string; abbreviation?: string; displayName?: string; shortDisplayName?: string; name?: string };
 }
 interface EspnStatus {
   type?: {
@@ -157,16 +157,20 @@ function readScore(c: EspnCompetitor | undefined): string {
 function formatResult(e: EspnEvent, teamId: string, ourName: string): string {
   const { us, them } = competitorsFor(e, teamId);
   if (!us || !them) return "—";
-  const opp = them.team?.displayName ?? them.team?.abbreviation ?? "?";
+  const opp = opponentName(them);
   return `${ourName} ${readScore(us)} - ${opp} ${readScore(them)}`;
 }
 
 function formatLive(e: EspnEvent, teamId: string, ourName: string): string {
   const { us, them } = competitorsFor(e, teamId);
   if (!us || !them) return "live";
-  const opp = them.team?.displayName ?? them.team?.abbreviation ?? "?";
+  const opp = opponentName(them);
   const detail = e.competitions?.[0]?.status?.type?.shortDetail ?? "live";
   return `${ourName} ${readScore(us)} - ${opp} ${readScore(them)} · ${detail}`;
+}
+
+function opponentName(c: EspnCompetitor): string {
+  return c.team?.shortDisplayName ?? c.team?.name ?? c.team?.abbreviation ?? c.team?.displayName ?? "?";
 }
 
 function formatNext(e: EspnEvent, teamId: string, now: Date, tz: string): string {
