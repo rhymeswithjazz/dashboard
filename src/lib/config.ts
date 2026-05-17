@@ -17,9 +17,22 @@ export interface NewsConfig {
   google_news_queries: string[];
 }
 
+export type SportsLeague = "mlb" | "nfl" | "college-football";
+
+export interface SportsTeam {
+  league: SportsLeague;
+  team_id: number;
+  label: string;
+}
+
+export interface SportsConfig {
+  teams: SportsTeam[];
+}
+
 export interface Config {
   location: Location;
   news: NewsConfig;
+  sports: SportsConfig;
 }
 
 let cached: Config | null = null;

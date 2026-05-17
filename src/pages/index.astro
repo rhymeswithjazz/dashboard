@@ -15,16 +15,18 @@ import { fetchWeather } from "../data/weather";
 import { fetchWikipediaPack, pickWord } from "../data/wikipedia";
 import { fetchWordOfTheDay } from "../data/mw";
 import { fetchNews } from "../data/news";
+import { fetchSports } from "../data/sports";
 
 const { mode, label, builtAt } = getModeMeta();
 const config = loadConfig();
 const fallback = sampleData(mode);
 
-const [weather, wiki, mwWord, news] = await Promise.all([
+const [weather, wiki, mwWord, news, sports] = await Promise.all([
   fetchWeather(config.location, mode),
   fetchWikipediaPack(),
   fetchWordOfTheDay(process.env["MW_API_KEY"]),
   fetchNews(config.news),
+  fetchSports(config.sports, config.location.timezone),
 ]);
 
 const word = mwWord ?? pickWord(builtAt);
@@ -34,6 +36,7 @@ const data = {
   weather: weather ?? fallback.weather,
   picture: wiki.picture,
   news: news ?? fallback.news,
+  sports: sports ?? fallback.sports,
   curio: {
     onThisDay: wiki.onThisDay ?? fallback.curio.onThisDay,
     word,

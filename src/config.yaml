@@ -7,6 +7,13 @@ location:
   lon: -85.0766
   timezone: "America/New_York"
 
+sports:
+  # ESPN team IDs. Look up via espn.com team URL: …/team/_/id/<teamId>/…
+  teams:
+    - { league: "mlb",              team_id: 15, label: "Braves" }
+    - { league: "nfl",              team_id: 1,  label: "Falcons" }
+    - { league: "college-football", team_id: 61, label: "Bulldogs" }
+
 news:
   hn_count: 5            # how many top HN stories to fetch
   per_source_max: 2      # cap items per individual feed/source
