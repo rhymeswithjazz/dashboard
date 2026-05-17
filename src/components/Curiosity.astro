@@ -7,8 +7,31 @@ const { data } = Astro.props;
   <h2>The Curiosities</h2>
   <hr class="rule">
   <div class="curio">
-    <p><strong>On this day, {data.onThisDay.year}.</strong> {data.onThisDay.text}</p>
-    <p><strong>Word.</strong> <em>{data.word.term}</em>{data.word.pos ? ` (${data.word.pos})` : ""} — {data.word.def}</p>
-    <p><strong>From the encyclopedia.</strong> {data.wiki}</p>
+    <p>
+      <strong>On this day, {data.onThisDay.link ? (
+        <a href={data.onThisDay.link} rel="noopener">{data.onThisDay.year}</a>
+      ) : (
+        data.onThisDay.year
+      )}.</strong>
+      {" "}{data.onThisDay.text}
+    </p>
+    <p>
+      <strong>Word.</strong>{" "}
+      <em>{data.word.term}</em>{data.word.pos ? ` (${data.word.pos})` : ""} — {data.word.def}
+    </p>
+    <p>
+      <strong>From the encyclopedia{data.wiki.title ? ":" : "."}</strong>
+      {data.wiki.title && (
+        <>
+          {" "}
+          {data.wiki.link ? (
+            <a href={data.wiki.link} rel="noopener"><em>{data.wiki.title}</em></a>
+          ) : (
+            <em>{data.wiki.title}</em>
+          )}.
+        </>
+      )}
+      {" "}{data.wiki.text}
+    </p>
   </div>
 </section>

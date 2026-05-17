@@ -13,12 +13,19 @@ export interface PictureData {
 export interface OnThisDayItem {
   year: string;
   text: string;
+  link?: string;
+}
+
+export interface RandomWikiItem {
+  text: string;
+  title?: string;
+  link?: string;
 }
 
 export interface WikipediaPack {
   onThisDay: OnThisDayItem | null;
   picture: PictureData | null;
-  randomWiki: string | null;
+  randomWiki: RandomWikiItem | null;
 }
 
 interface FeaturedResponse {
@@ -34,13 +41,20 @@ interface FeaturedResponse {
   onthisday?: Array<{
     text: string;
     year: number;
-    pages?: Array<{ thumbnail?: unknown }>;
+    pages?: Array<{
+      thumbnail?: unknown;
+      titles?: { normalized?: string };
+      content_urls?: { desktop?: { page?: string } };
+    }>;
   }>;
 }
 
 interface RandomSummaryResponse {
   title?: string;
+  displaytitle?: string;
   extract?: string;
+  titles?: { normalized?: string };
+  content_urls?: { desktop?: { page?: string } };
 }
 
 export async function fetchWikipediaPack(): Promise<WikipediaPack> {
@@ -91,7 +105,7 @@ async function fetchFeatured(): Promise<{
   }
 }
 
-async function fetchRandom(): Promise<string | null> {
+async function fetchRandom(): Promise<RandomWikiItem | null> {
   try {
     const res = await fetch("https://en.wikipedia.org/api/rest_v1/page/random/summary", {
       headers: { "User-Agent": UA, Accept: "application/json" },
@@ -103,7 +117,11 @@ async function fetchRandom(): Promise<string | null> {
     }
     const json = (await res.json()) as RandomSummaryResponse;
     if (!json.extract) return null;
-    return trimToSentences(json.extract, 2);
+    return {
+      text: trimToSentences(json.extract, 2),
+      title: json.titles?.normalized ?? json.displaytitle ?? json.title,
+      link: json.content_urls?.desktop?.page,
+    };
   } catch (err) {
     console.warn("[wiki/random] fetch failed:", err);
     return null;
@@ -123,7 +141,12 @@ function pickOnThisDay(
   const pool = notable.length > 0 ? notable : events;
   const seed = month * 32 + day;
   const event = pool[seed % pool.length]!;
-  return { year: String(event.year), text: event.text };
+  // Pick the first page with a thumbnail (most notable) for the link target;
+  // fall back to the first page if none have one.
+  const pages = event.pages ?? [];
+  const primary = pages.find((p) => p.thumbnail) ?? pages[0];
+  const link = primary?.content_urls?.desktop?.page;
+  return { year: String(event.year), text: event.text, link };
 }
 
 function formatPicture(img: FeaturedResponse["image"]): PictureData | null {

@@ -16,9 +16,9 @@ export interface SportsData { games: GameLine[] }
 export interface NewsItem { tag: string; title: string; sub: string }
 export interface NewsData { items: NewsItem[] }
 export interface CurioData {
-  onThisDay: { year: string; text: string };
+  onThisDay: { year: string; text: string; link?: string };
   word: { term: string; def: string; pos?: string };
-  wiki: string;
+  wiki: { text: string; title?: string; link?: string };
 }
 export interface PictureData {
   url: string;
@@ -86,9 +86,17 @@ const WARMUP: DashboardData = {
   },
   picture: null,
   curio: {
-    onThisDay: { year: "1954", text: "The Supreme Court decides Brown v. Board of Education, ruling racial segregation in public schools unconstitutional." },
+    onThisDay: {
+      year: "1954",
+      text: "The Supreme Court decides Brown v. Board of Education, ruling racial segregation in public schools unconstitutional.",
+      link: "https://en.wikipedia.org/wiki/Brown_v._Board_of_Education",
+    },
     word: { term: "Sonder", def: "the realization that each passerby is living a life as vivid and complex as your own." },
-    wiki: "The Gympie-Gympie tree of Queensland is among the most painfully stinging plants known; survivors describe the sensation as lasting months.",
+    wiki: {
+      text: "The Gympie-Gympie tree of Queensland is among the most painfully stinging plants known; survivors describe the sensation as lasting months.",
+      title: "Dendrocnide moroides",
+      link: "https://en.wikipedia.org/wiki/Dendrocnide_moroides",
+    },
   },
 };
 
@@ -136,8 +144,16 @@ const COOLDOWN: DashboardData = {
   },
   picture: null,
   curio: {
-    onThisDay: { year: "1954", text: "The Supreme Court decides Brown v. Board of Education, ruling racial segregation in public schools unconstitutional." },
+    onThisDay: {
+      year: "1954",
+      text: "The Supreme Court decides Brown v. Board of Education, ruling racial segregation in public schools unconstitutional.",
+      link: "https://en.wikipedia.org/wiki/Brown_v._Board_of_Education",
+    },
     word: { term: "Sonder", def: "the realization that each passerby is living a life as vivid and complex as your own." },
-    wiki: "The Gympie-Gympie tree of Queensland is among the most painfully stinging plants known; survivors describe the sensation as lasting months.",
+    wiki: {
+      text: "The Gympie-Gympie tree of Queensland is among the most painfully stinging plants known; survivors describe the sensation as lasting months.",
+      title: "Dendrocnide moroides",
+      link: "https://en.wikipedia.org/wiki/Dendrocnide_moroides",
+    },
   },
 };
