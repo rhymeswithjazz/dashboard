@@ -1,7 +1,7 @@
 // Curated word-of-the-day list. Picked by day-of-year; cycles every WORDS.length days.
 // Edit freely — keep entries short (definition ≤ ~15 words).
 
-export interface Word { term: string; def: string }
+export interface Word { term: string; def: string; pos?: string }
 
 export const WORDS: Word[] = [
   { term: "Petrichor",     def: "the earthy scent of rain hitting dry ground." },

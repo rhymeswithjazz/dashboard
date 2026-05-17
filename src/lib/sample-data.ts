@@ -17,7 +17,7 @@ export interface NewsItem { tag: string; title: string; sub: string }
 export interface NewsData { items: NewsItem[] }
 export interface CurioData {
   onThisDay: { year: string; text: string };
-  word: { term: string; def: string };
+  word: { term: string; def: string; pos?: string };
   wiki: string;
 }
 export interface PictureData {

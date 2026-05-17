@@ -64,7 +64,11 @@ page frontmatter and parallelized with `Promise.all`.
    - Point a DNS CNAME record at `<your-user>.github.io`.
    - In Cloudflare, add an **Access Application** for that subdomain
      gated by your email/identity.
-5. Set the secrets that future fetchers will need under
+5. Set the secrets that fetchers need under
    **Repo Settings → Secrets and variables → Actions**:
-   - `ANTHROPIC_API_KEY` (briefing)
-   - `GH_DASHBOARD_PAT` (cross-repo PR queries)
+   - `MW_API_KEY` — Merriam-Webster Collegiate Dictionary API key
+     (enriches the word-of-the-day; falls back to RSS-only and then
+     to a curated list if absent)
+   - `ANTHROPIC_API_KEY` — for the AI briefing (not yet wired)
+   - `GH_DASHBOARD_PAT` — fine-grained PAT for cross-repo PR
+     queries (not yet wired)

@@ -13,17 +13,19 @@ import { sampleData } from "../lib/sample-data";
 import { loadConfig } from "../lib/config";
 import { fetchWeather } from "../data/weather";
 import { fetchWikipediaPack, pickWord } from "../data/wikipedia";
+import { fetchWordOfTheDay } from "../data/mw";
 
 const { mode, label, builtAt } = getModeMeta();
 const config = loadConfig();
 const fallback = sampleData(mode);
 
-const [weather, wiki] = await Promise.all([
+const [weather, wiki, mwWord] = await Promise.all([
   fetchWeather(config.location, mode),
   fetchWikipediaPack(),
+  fetchWordOfTheDay(process.env["MW_API_KEY"]),
 ]);
 
-const word = pickWord(builtAt);
+const word = mwWord ?? pickWord(builtAt);
 
 const data = {
   ...fallback,
