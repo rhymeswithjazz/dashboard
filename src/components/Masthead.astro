@@ -1,0 +1,16 @@
+---
+interface Props {
+  modeLabel: string;
+  dateLabel: string;
+  volume: string;
+}
+const { modeLabel, dateLabel, volume } = Astro.props;
+---
+<header class="mast">
+  <h1 class="name">The Daily</h1>
+  <div class="mode">{modeLabel} edition</div>
+  <div class="meta">
+    <span>{dateLabel}</span>
+    <span>{volume}</span>
+  </div>
+</header>

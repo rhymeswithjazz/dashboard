@@ -1,0 +1,41 @@
+---
+import Newsprint from "../layouts/Newsprint.astro";
+import Masthead from "../components/Masthead.astro";
+import Briefing from "../components/Briefing.astro";
+import Today from "../components/Today.astro";
+import Work from "../components/Work.astro";
+import Sports from "../components/Sports.astro";
+import News from "../components/News.astro";
+import Curiosity from "../components/Curiosity.astro";
+import { getModeMeta, formatDateET, formatTimeET, volumeNumber } from "../lib/mode";
+import { sampleData } from "../lib/sample-data";
+
+const { mode, label, builtAt } = getModeMeta();
+const data = sampleData(mode);
+
+const dateLabel = formatDateET(builtAt);
+const volume = volumeNumber(builtAt);
+const builtLabel = `Printed at ${formatTimeET(builtAt)} ET · dashboard.example.com`;
+
+const briefingHeading = mode === "warmup" ? "Morning Briefing" : "Evening Briefing";
+
+const todayKicker =
+  mode === "warmup"
+    ? "Atlanta · the day ahead"
+    : "Atlanta · what's on deck tomorrow";
+
+const workKicker =
+  mode === "warmup"
+    ? "Awaiting your review. One of yours is red."
+    : "Day's tally and what's still open.";
+---
+<Newsprint title={`The Daily · ${label}`}>
+  <Masthead modeLabel={label} dateLabel={dateLabel} volume={volume} />
+  <Briefing heading={briefingHeading} data={data.briefing} />
+  <Today weather={data.weather} calendar={data.calendar} kicker={todayKicker} />
+  <Work data={data.work} kicker={workKicker} />
+  <Sports data={data.sports} />
+  <News data={data.news} />
+  <Curiosity data={data.curio} />
+  <footer class="colophon">{builtLabel}</footer>
+</Newsprint>

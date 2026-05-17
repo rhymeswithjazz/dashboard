@@ -1,0 +1,69 @@
+name: Build & deploy dashboard
+
+on:
+  schedule:
+    # GitHub Actions cron runs in UTC and ignores DST.
+    # 08:00 UTC = 4am ET in EDT, 3am ET in EST (Warm Up).
+    # 20:00 UTC = 4pm ET in EDT, 3pm ET in EST (Cool Down).
+    - cron: "0 8 * * *"
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Build mode"
+        type: choice
+        options:
+          - warmup
+          - cooldown
+        default: warmup
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      MODE: >-
+        ${{
+          github.event.inputs.mode
+          || (github.event.schedule == '0 20 * * *' && 'cooldown')
+          || 'warmup'
+        }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install
+        run: npm ci
+
+      - name: Build (${{ env.MODE }})
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

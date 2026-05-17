@@ -1,0 +1,86 @@
+---
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+<style is:global>
+  :root {
+    --paper: #faf6ef;
+    --ink: #1f1a14;
+    --rule: #1f1a14;
+    --muted: #5a544a;
+    --accent: #8a1c13;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); }
+  body {
+    font-family: "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+
+  /* Masthead */
+  .mast { text-align: center; padding: 0.5rem 0 1rem; border-bottom: 3px double var(--rule); }
+  .mast .name { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1; margin: 0; }
+  .mast .mode { font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-top: 0.5rem; }
+  .mast .meta { display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+  /* Section */
+  .section { margin-top: 2.25rem; }
+  .section > h2 { font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.25rem; font-weight: 700; }
+  .section > h2 + .rule { border: 0; border-top: 1px solid var(--rule); margin: 0 0 1rem; }
+  .kicker { font-style: italic; color: var(--muted); margin: 0 0 0.5rem; font-size: 0.95rem; }
+
+  /* Briefing */
+  .briefing { font-size: 1.25rem; line-height: 1.5; font-style: italic; }
+  .briefing::first-letter { font-size: 3em; float: left; line-height: 0.85; padding: 0.2rem 0.5rem 0 0; font-weight: 700; font-style: normal; color: var(--accent); }
+
+  /* Weather & calendar inline lines */
+  dl.line { display: grid; grid-template-columns: 6rem 1fr; row-gap: 0.4rem; margin: 0; }
+  dl.line dt { color: var(--muted); font-variant-numeric: tabular-nums; }
+  dl.line dd { margin: 0; }
+
+  /* Lists of items (news, github) */
+  ul.feed { list-style: none; padding: 0; margin: 0; }
+  ul.feed li { padding: 0.75rem 0; border-top: 1px solid rgba(31,26,20,0.12); }
+  ul.feed li:first-child { border-top: 0; padding-top: 0; }
+  ul.feed .tag { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.15rem; }
+  ul.feed .title { font-size: 1.05rem; font-weight: 600; }
+  ul.feed .sub { color: var(--muted); font-size: 0.9rem; margin-top: 0.15rem; }
+
+  /* Scores */
+  .score { display: flex; align-items: baseline; justify-content: space-between; padding: 0.6rem 0; border-top: 1px solid rgba(31,26,20,0.12); gap: 0.75rem; flex-wrap: wrap; }
+  .score:first-child { border-top: 0; padding-top: 0; }
+  .score .team { font-weight: 700; }
+  .score .result { font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 700; }
+  .score .next { color: var(--muted); font-size: 0.85rem; }
+
+  /* Curiosity */
+  .curio { font-size: 0.95rem; }
+  .curio p { margin: 0 0 0.75rem; }
+  .curio strong { font-variant: small-caps; letter-spacing: 0.05em; color: var(--accent); }
+
+  /* Colophon */
+  footer.colophon { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); text-align: center; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+  @media (min-width: 720px) {
+    body { font-size: 18px; }
+    .wrap { padding-top: 2.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <slot />
+</div>
+</body>
+</html>

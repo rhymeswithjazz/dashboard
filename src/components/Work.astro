@@ -1,0 +1,22 @@
+---
+import type { WorkData } from "../lib/sample-data";
+interface Props {
+  data: WorkData;
+  kicker: string;
+}
+const { data, kicker } = Astro.props;
+---
+<section class="section">
+  <h2>Work</h2>
+  <hr class="rule">
+  <p class="kicker">{kicker}</p>
+  <ul class="feed">
+    {data.items.map((it) => (
+      <li>
+        <span class="tag">{it.tag}</span>
+        <div class="title">{it.title}</div>
+        <div class="sub">{it.sub}</div>
+      </li>
+    ))}
+  </ul>
+</section>

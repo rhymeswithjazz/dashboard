@@ -1,0 +1,24 @@
+---
+import type { WeatherData, CalendarData } from "../lib/sample-data";
+interface Props {
+  weather: WeatherData;
+  calendar: CalendarData;
+  kicker: string;
+}
+const { weather, calendar, kicker } = Astro.props;
+---
+<section class="section">
+  <h2>{calendar.heading}</h2>
+  <hr class="rule">
+  <p class="kicker">{kicker}</p>
+  <dl class="line">
+    <dt>Weather</dt>
+    <dd>{weather.summary} · H {weather.high}° / L {weather.low}° · {weather.rainNote}</dd>
+    {calendar.events.map((ev) => (
+      <>
+        <dt>{ev.time}</dt>
+        <dd>{ev.title}</dd>
+      </>
+    ))}
+  </dl>
+</section>

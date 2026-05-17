@@ -1,0 +1,16 @@
+---
+import type { SportsData } from "../lib/sample-data";
+interface Props { data: SportsData }
+const { data } = Astro.props;
+---
+<section class="section">
+  <h2>Sports</h2>
+  <hr class="rule">
+  {data.games.map((g) => (
+    <div class="score">
+      <span class="team">{g.team}</span>
+      <span class="result">{g.result}</span>
+      <span class="next">{g.next}</span>
+    </div>
+  ))}
+</section>

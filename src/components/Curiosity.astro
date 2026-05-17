@@ -1,0 +1,14 @@
+---
+import type { CurioData } from "../lib/sample-data";
+interface Props { data: CurioData }
+const { data } = Astro.props;
+---
+<section class="section">
+  <h2>The Curiosities</h2>
+  <hr class="rule">
+  <div class="curio">
+    <p><strong>On this day, {data.onThisDay.year}.</strong> {data.onThisDay.text}</p>
+    <p><strong>Word.</strong> <em>{data.word.term}</em> (n.) — {data.word.def}</p>
+    <p><strong>From the encyclopedia.</strong> {data.wiki}</p>
+  </div>
+</section>
