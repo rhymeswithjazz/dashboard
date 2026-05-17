@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import type { Mode } from "../lib/mode";
 import type { DashboardData, BriefingData } from "../lib/sample-data";
 
-const MODEL = "claude-opus-4-7";
+const MODEL = "claude-haiku-4-5-20251001";
 const MAX_TOKENS = 400;
 
 const SYSTEM = `You're the masthead editor of a personal Newsprint-style daily dashboard. Twice a day — Warm Up at 4 a.m. and Cool Down at 4 p.m. — you write the lead paragraph that sits below the masthead and above every other widget on the page.
