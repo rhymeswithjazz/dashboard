@@ -62,7 +62,7 @@ const { title } = Astro.props;
   /* Scores */
   .score {
     display: grid;
-    grid-template-columns: minmax(5rem, max-content) 1fr auto;
+    grid-template-columns: 1fr auto;
     column-gap: 1rem;
     row-gap: 0.2rem;
     align-items: baseline;
@@ -70,14 +70,13 @@ const { title } = Astro.props;
     border-top: 1px solid rgba(31,26,20,0.12);
   }
   .score:first-child { border-top: 0; padding-top: 0; }
-  .score .team { font-weight: 700; }
   .score .result { font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 700; }
   .score .next { color: var(--muted); font-size: 0.85rem; text-align: right; }
 
   /* Narrow screens: drop `next` to its own line under `result`. */
   @media (max-width: 480px) {
-    .score { grid-template-columns: minmax(5rem, max-content) 1fr; }
-    .score .next { grid-column: 2; text-align: left; }
+    .score { grid-template-columns: 1fr; }
+    .score .next { text-align: left; }
   }
 
   /* Picture of the day */

@@ -69,9 +69,9 @@ const WARMUP: DashboardData = {
   },
   sports: {
     games: [
-      { team: "Braves",   result: "W 5–0 vs NYM",  next: "Today 7:20p" },
-      { team: "Falcons",  result: "offseason",     next: "camp Jul 23" },
-      { team: "Bulldogs", result: "offseason",     next: "Clemson · Aug 30" },
+      { team: "Braves",   result: "Braves 5 - Mets 0",     next: "Today 7:20p" },
+      { team: "Falcons",  result: "Falcons · offseason",   next: "camp Jul 23" },
+      { team: "Bulldogs", result: "Bulldogs · offseason",  next: "Clemson · Aug 30" },
     ],
   },
   news: {
@@ -127,9 +127,9 @@ const COOLDOWN: DashboardData = {
   },
   sports: {
     games: [
-      { team: "Braves",   result: "vs NYM · top 5",  next: "Tomorrow 7:20p" },
-      { team: "Falcons",  result: "offseason",       next: "camp Jul 23" },
-      { team: "Bulldogs", result: "offseason",       next: "Clemson · Aug 30" },
+      { team: "Braves",   result: "Braves 3 - Mets 1 · Top 5",  next: "Tomorrow 7:20p" },
+      { team: "Falcons",  result: "Falcons · offseason",        next: "camp Jul 23" },
+      { team: "Bulldogs", result: "Bulldogs · offseason",       next: "Clemson · Aug 30" },
     ],
   },
   news: {

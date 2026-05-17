@@ -58,7 +58,7 @@ async function fetchTeam(team: SportsTeam, tz: string): Promise<GameLine | null>
     });
     if (!res.ok) {
       console.warn(`[sports/${team.label}] schedule non-2xx: ${res.status}`);
-      return { team: team.label, result: "—", next: "—" };
+      return { team: team.label, result: `${team.label} —`, next: "—" };
     }
     const json = (await res.json()) as EspnScheduleResponse;
     const events = json.events ?? [];
@@ -69,7 +69,7 @@ async function fetchTeam(team: SportsTeam, tz: string): Promise<GameLine | null>
     return buildLine(team, events, live, tz);
   } catch (err) {
     console.warn(`[sports/${team.label}] fetch failed:`, err);
-    return { team: team.label, result: "—", next: "—" };
+    return { team: team.label, result: `${team.label} —`, next: "—" };
   }
 }
 
@@ -118,12 +118,12 @@ function buildLine(team: SportsTeam, events: EspnEvent[], liveEvent: EspnEvent |
   let result: string;
   if (inProgress) {
     // Prefer the scoreboard event for fresh scores; fall back to schedule.
-    result = formatLive(liveEvent ?? inProgress, teamIdStr);
+    result = formatLive(liveEvent ?? inProgress, teamIdStr, team.label);
   } else if (lastFinal) {
     const ageDays = (now.getTime() - Date.parse(lastFinal.date)) / 86_400_000;
-    result = ageDays <= STALE_DAYS ? formatResult(lastFinal, teamIdStr) : "offseason";
+    result = ageDays <= STALE_DAYS ? formatResult(lastFinal, teamIdStr, team.label) : `${team.label} · offseason`;
   } else {
-    result = "offseason";
+    result = `${team.label} · offseason`;
   }
 
   const next = nextScheduled
@@ -154,22 +154,19 @@ function readScore(c: EspnCompetitor | undefined): string {
   return "0";
 }
 
-function formatResult(e: EspnEvent, teamId: string): string {
+function formatResult(e: EspnEvent, teamId: string, ourName: string): string {
   const { us, them } = competitorsFor(e, teamId);
   if (!us || !them) return "—";
-  const wl = us.winner === true ? "W" : them.winner === true ? "L" : "T";
-  const venue = us.homeAway === "home" ? "vs" : "@";
-  const opp = them.team?.abbreviation ?? them.team?.displayName ?? "?";
-  return `${wl} ${readScore(us)}–${readScore(them)} ${venue} ${opp}`;
+  const opp = them.team?.displayName ?? them.team?.abbreviation ?? "?";
+  return `${ourName} ${readScore(us)} - ${opp} ${readScore(them)}`;
 }
 
-function formatLive(e: EspnEvent, teamId: string): string {
+function formatLive(e: EspnEvent, teamId: string, ourName: string): string {
   const { us, them } = competitorsFor(e, teamId);
   if (!us || !them) return "live";
-  const venue = us.homeAway === "home" ? "vs" : "@";
-  const opp = them.team?.abbreviation ?? "?";
+  const opp = them.team?.displayName ?? them.team?.abbreviation ?? "?";
   const detail = e.competitions?.[0]?.status?.type?.shortDetail ?? "live";
-  return `${readScore(us)}–${readScore(them)} ${venue} ${opp} · ${detail}`;
+  return `${ourName} ${readScore(us)} - ${opp} ${readScore(them)} · ${detail}`;
 }
 
 function formatNext(e: EspnEvent, teamId: string, now: Date, tz: string): string {

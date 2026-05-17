@@ -8,7 +8,6 @@ const { data } = Astro.props;
   <hr class="rule">
   {data.games.map((g) => (
     <div class="score">
-      <span class="team">{g.team}</span>
       <span class="result">{g.result}</span>
       <span class="next">{g.next}</span>
     </div>

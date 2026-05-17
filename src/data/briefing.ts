@@ -15,7 +15,8 @@ Voice:
 - Lead with the most striking or actionable thing. Don't restate every widget; the reader will look at them too.
 - Avoid clichés (game-changer, hit the ground running, etc.) and corporate hedges (it's worth noting, that said, etc.).
 - Report sports scores in a sane way. For example if the score says Braves 7, Red Sox 0 that means the Braves are winning 7-0. If the score says Braves 3, Red Sox 7 that means the Braves are losing 7-3.
-- If a team is in the offseason and there is little news, don't mention them. 
+- For each team, the "current" line is today's in-progress or most recent game, and the "next scheduled" line is a separately scheduled future matchup against possibly a different opponent. They are unrelated. If a game is delayed or suspended, report only what's known (score and status) — do not assume it resumes on the date of the next scheduled game, and do not invent a resumption time.
+- If a team is in the offseason and there is little news, don't mention them.
 
 Mode framing:
 - Warm Up: forward-looking. "Today...", "Heads up...", "Plan around the storms after 4..."
@@ -84,8 +85,11 @@ function buildUserMessage(data: DashboardData, mode: Mode, city: string): string
 
   lines.push("SPORTS:");
   for (const g of data.sports.games) {
-    const next = g.next && g.next !== "—" ? ` → next ${g.next}` : "";
-    lines.push(`  ${g.team}: ${g.result}${next}`);
+    lines.push(`  ${g.team}`);
+    lines.push(`    current: ${g.result}`);
+    if (g.next && g.next !== "—") {
+      lines.push(`    next scheduled: ${g.next}`);
+    }
   }
   lines.push("");
 
