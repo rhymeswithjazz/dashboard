@@ -2,7 +2,7 @@
 # Values here are baked into the page at build time; no secrets belong in this file.
 
 location:
-  city: "Atlanta, GA"
-  lat: 33.749
-  lon: -84.388
+  city: "Carrollton, GA"
+  lat: 33.5801
+  lon: -85.0766
   timezone: "America/New_York"
